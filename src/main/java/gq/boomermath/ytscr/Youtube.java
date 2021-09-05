@@ -9,18 +9,18 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 public class Youtube {
-	private static Video[] searchQuery(String query, int limit) {
-		JSONObject inputData = HTMLParser.parse("https://www.youtube.com/results?search_query=" + URLEncoder.encode(query, StandardCharsets.UTF_8));
+    private static Video[] searchQuery(String query, int limit) {
+        JSONObject inputData = HTMLParser.parse("https://www.youtube.com/results?search_query=" + URLEncoder.encode(query, StandardCharsets.UTF_8));
         return Serializer.processQuery(inputData, limit);
-	}
-	
+    }
+
     public static Video[] search(String query) {
-       return search(query, 0);
+        return search(query, 0);
     }
 
     public static Video[] search(String query, int limit) {
-		if (limit <= 0) throw new IllegalArgumentException("Limit must be greater than 0!");
-		return searchQuery(query, limit);
+        if (limit <= 0) throw new IllegalArgumentException("Limit must be greater than 0!");
+        return searchQuery(query, limit);
     }
 
     public static Video searchOne(String query) {
