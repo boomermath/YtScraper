@@ -15,7 +15,7 @@ public class Youtube {
     }
 
     public static Video[] search(String query) {
-        return search(query, 0);
+        return searchQuery(query, 0);
     }
 
     public static Video[] search(String query, int limit) {
@@ -24,7 +24,7 @@ public class Youtube {
     }
 
     public static Video searchOne(String query) {
-        return search(query, 1)[0];
+        return searchQuery(query, 1)[0];
     }
 
     public static Video getVideo(String url) {
