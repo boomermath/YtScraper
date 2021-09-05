@@ -27,7 +27,7 @@ public class Youtube {
         return search(query, 1)[0];
     }
 
-    public static Video getVideo(String url) throws IllegalArgumentException {
+    public static Video getVideo(String url) {
         String urlID = HTMLParser.getVideoID(url);
 
         if (urlID == null) {
@@ -38,7 +38,7 @@ public class Youtube {
         return Serializer.processVideo(inputData[0], inputData[1]);
     }
 
-    public static Playlist getPlaylist(String url) throws IllegalArgumentException {
+    public static Playlist getPlaylist(String url) {
         String playlistID = HTMLParser.getPlaylistID(url);
 
         if (playlistID == null) {
