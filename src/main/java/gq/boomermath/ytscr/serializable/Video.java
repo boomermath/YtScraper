@@ -1,4 +1,4 @@
-package com.boomermath.ytscr.serializable;
+package gq.boomermath.ytscr.serializable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

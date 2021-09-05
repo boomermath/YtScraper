@@ -1,4 +1,4 @@
-package com.boomermath.ytscr;
+package gq.boomermath.ytscr;
 
 import org.json.JSONObject;
 import org.jsoup.Jsoup;

@@ -1,9 +1,9 @@
-package com.boomermath.ytscr.serializer;
+package gq.boomermath.ytscr.serializer;
 
-import com.boomermath.ytscr.serializable.Channel;
-import com.boomermath.ytscr.serializable.Playlist;
-import com.boomermath.ytscr.serializable.Thumbnail;
-import com.boomermath.ytscr.serializable.Video;
+import gq.boomermath.ytscr.serializable.Channel;
+import gq.boomermath.ytscr.serializable.Playlist;
+import gq.boomermath.ytscr.serializable.Thumbnail;
+import gq.boomermath.ytscr.serializable.Video;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

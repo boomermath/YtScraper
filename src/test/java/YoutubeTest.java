@@ -1,5 +1,5 @@
-import com.boomermath.ytscr.Youtube;
-import com.boomermath.ytscr.serializable.Video;
+import gq.boomermath.ytscr.Youtube;
+import gq.boomermath.ytscr.serializable.Video;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -21,9 +21,5 @@ public class YoutubeTest {
         Assertions.assertEquals("https://i.ytimg.com/vi/wDgQdr8ZkTw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB_AcbbbqJa5VCmkfjBfjkPrB3peg", megalovaniaVideo.thumbnails()[0].url());
         Assertions.assertEquals("UCrBJGj-Vi8Z9XTftw-PEgCA", megalovaniaVideo.author().id());
         Assertions.assertEquals("Game Guard", megalovaniaVideo.author().title());
-    }
-
-    public void testVideo() {
-        Video video = Youtube.getVideo("https://www.youtube.com/watch?v=wDgQdr8ZkTw");
     }
 }

@@ -1,11 +1,10 @@
-package com.boomermath.ytscr;
+package gq.boomermath.ytscr;
 
-import com.boomermath.ytscr.serializable.Playlist;
-import com.boomermath.ytscr.serializable.Video;
-import com.boomermath.ytscr.serializer.Serializer;
+import gq.boomermath.ytscr.serializable.Playlist;
+import gq.boomermath.ytscr.serializable.Video;
+import gq.boomermath.ytscr.serializer.Serializer;
 import org.json.JSONObject;
 
-import java.net.MalformedURLException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 

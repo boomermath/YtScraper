@@ -1,4 +1,4 @@
-package com.boomermath.ytscr.serializable;
+package gq.boomermath.ytscr.serializable;
 
 public record Channel(String title, String id, String url, String subscribers, Thumbnail icon) {
     public String toString() {

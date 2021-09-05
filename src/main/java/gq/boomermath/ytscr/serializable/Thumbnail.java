@@ -1,4 +1,4 @@
-package com.boomermath.ytscr.serializable;
+package gq.boomermath.ytscr.serializable;
 
 public record Thumbnail(String url, int width, int height) {
     public String toString() {

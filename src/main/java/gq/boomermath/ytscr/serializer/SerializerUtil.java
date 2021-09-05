@@ -1,14 +1,9 @@
-package com.boomermath.ytscr.serializer;
+package gq.boomermath.ytscr.serializer;
 
-import com.boomermath.ytscr.serializable.Channel;
-import com.boomermath.ytscr.serializable.Thumbnail;
+import gq.boomermath.ytscr.serializable.Channel;
+import gq.boomermath.ytscr.serializable.Thumbnail;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-
-import java.io.IOException;
 
 public class SerializerUtil {
     protected static JSONObject parseJSONObject(JSONObject obj, String path) {

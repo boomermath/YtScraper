@@ -1,4 +1,4 @@
-package com.boomermath.ytscr.serializable;
+package gq.boomermath.ytscr.serializable;
 
 public record Playlist(String id, String title, Thumbnail[] thumbnails, Channel author, Video[] videos) {
     public String toString() {
