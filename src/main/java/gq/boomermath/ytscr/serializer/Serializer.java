@@ -41,6 +41,7 @@ public class Serializer {
         }
 
         return videos.toArray(Video[]::new);
+
     }
 
     public static Playlist processPlaylist(JSONObject initialData) {
