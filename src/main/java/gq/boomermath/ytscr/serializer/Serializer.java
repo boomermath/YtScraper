@@ -7,8 +7,6 @@ import gq.boomermath.ytscr.serializable.Video;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.awt.*;
-import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.Objects;
 

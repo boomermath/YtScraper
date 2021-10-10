@@ -7,17 +7,14 @@ import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 class HTMLParser {
     private static final String DEFAULT_PREFIX = "var ytInitialData =";
     private static final String PLAYER_PREFIX = "var ytInitialPlayerResponse =";
 
-    public static JSONObject parse(String url) {
+    protected static JSONObject parse(String url) {
         try {
             Document document = Jsoup.connect(url).get();
 
