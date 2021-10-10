@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
-public record Video(String id, String title, String description,
+public record Video(String id, String name, String description,
                     String duration, String uploaded,
                     Thumbnail[] thumbnails,
                     Channel author, long views) {
@@ -30,6 +30,6 @@ public record Video(String id, String title, String description,
     }
 
     public String toString() {
-        return title;
+        return name;
     }
 }

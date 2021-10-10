@@ -7,6 +7,9 @@ import gq.boomermath.ytscr.serializable.Video;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Serializer {
@@ -14,8 +17,8 @@ public class Serializer {
         JSONObject content = (JSONObject) SerializerUtil.parseJSONObject(initialData, "contents.twoColumnSearchResultsRenderer.primaryContents.sectionListRenderer").getJSONArray("contents").get(0);
         JSONArray videoArr = content.getJSONObject("itemSectionRenderer").getJSONArray("contents");
 
-        int lim = limit == 0 ? videoArr.length() : limit;
-        Video[] videos = new Video[lim];
+        int lim = limit == 0 || limit > videoArr.length() ? videoArr.length() : limit;
+        ArrayList<Video> videos = new ArrayList<>();
 
         for (int i = 0; i < lim; i++) {
             JSONObject videoJSON = ((JSONObject) videoArr.get(i)).optJSONObject("videoRenderer");
@@ -36,10 +39,10 @@ public class Serializer {
                     Long.parseLong(videoJSON.getJSONObject("viewCountText").getString("simpleText").replaceAll(" views", "").replaceAll(",", ""))
             );
 
-            videos[i] = video;
+            videos.add(video);
         }
 
-        return videos;
+        return videos.toArray(Video[]::new);
     }
 
     public static Playlist processPlaylist(JSONObject initialData) {
@@ -75,21 +78,22 @@ public class Serializer {
         JSONObject secondaryRenderer = ((JSONObject) playlistItems.get(1)).getJSONObject("playlistSidebarSecondaryInfoRenderer");
 
         JSONObject title = (JSONObject) primaryRenderer.getJSONObject("title").getJSONArray("runs").get(0);
-        JSONObject author = SerializerUtil.parseAuthorJSON(SerializerUtil.parseJSONObject(secondaryRenderer, "videoOwner.videoOwnerRenderer"));
+        JSONObject videoOwnerRenderer = SerializerUtil.parseJSONObject(secondaryRenderer, "videoOwner.videoOwnerRenderer");
+        JSONObject author = SerializerUtil.parseAuthorJSON(videoOwnerRenderer);
 
         String metaURL = SerializerUtil.parseJSONObject(author, "navigationEndpoint.commandMetadata.webCommandMetadata").getString("url");
         String finalAuthorURL = metaURL != null ? metaURL : author.getJSONObject("browseEndpoint").getString("canonicalBaseUrl");
 
         return new Playlist(
                 SerializerUtil.parseJSONObject(title, "navigationEndpoint.watchEndpoint").getString("playlistId"),
-                primaryRenderer.getString("text"),
+                SerializerUtil.parseAuthorJSON(primaryRenderer).getString("text"),
                 SerializerUtil.parseThumbnails(SerializerUtil.parseJSONObject(primaryRenderer, "thumbnailRenderer.playlistVideoThumbnailRenderer.thumbnail")),
-                new Channel(author.getString("text"), finalAuthorURL.split("/")[1], "https://www.youtube.com" + finalAuthorURL, null, SerializerUtil.parseThumbnails(author.getJSONObject("thumbnail"))[0]),
+                new Channel(author.getString("text"), finalAuthorURL.split("/")[1], "https://www.youtube.com" + finalAuthorURL, null, SerializerUtil.parseThumbnails(videoOwnerRenderer.getJSONObject("thumbnail"))[0]),
                 videos
         );
     }
 
-    public static Video processVideo(JSONObject initialData, JSONObject playerData) {
+    public static Video processVideo(JSONObject playerData, JSONObject initialData) {
         JSONObject videoDetails = initialData.getJSONObject("videoDetails");
 
         JSONObject resultsRenderer = SerializerUtil.parseJSONObject(playerData, "contents.twoColumnWatchNextResults.results.results");

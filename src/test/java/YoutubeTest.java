@@ -11,7 +11,7 @@ public class YoutubeTest {
 
         Video megalovaniaVideo = videos[0];
 
-        Assertions.assertEquals("Undertale - Megalovania", megalovaniaVideo.title());
+        Assertions.assertEquals("Undertale - Megalovania", megalovaniaVideo.name());
         Assertions.assertEquals("wDgQdr8ZkTw", megalovaniaVideo.id());
         Assertions.assertTrue(megalovaniaVideo.description().startsWith("The song megalovania"));
         Assertions.assertEquals("5:14", megalovaniaVideo.duration());

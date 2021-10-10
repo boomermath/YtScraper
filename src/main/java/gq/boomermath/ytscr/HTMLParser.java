@@ -60,7 +60,7 @@ class HTMLParser {
     private static String getQueryParameter(String input, String queryParam) throws MalformedURLException {
         URL url = new URL(input);
 
-        if (!url.getHost().equals("youtube.com")) throw new MalformedURLException("Input is not a valid youtube url!");
+        if (!url.getHost().equals("youtube.com") && !url.getHost().equals("www.youtube.com")) throw new MalformedURLException("Input is not a valid youtube url!");
 
         String[] queryString = url.getQuery().split("&");
         HashMap<String, String> queryParams = new HashMap<>();
