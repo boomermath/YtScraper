@@ -28,7 +28,7 @@ public class Youtube {
     }
 
     public static Video getVideo(String url) {
-        String urlID = HTMLParser.getVideoID(url);
+        String urlID = HTMLParser.getQueryParameter(url, "v");
 
         if (urlID == null) {
             throw new IllegalArgumentException("URL \"" + url + "\" is an invalid youtube url!");
@@ -39,7 +39,7 @@ public class Youtube {
     }
 
     public static Playlist getPlaylist(String url) {
-        String playlistID = HTMLParser.getPlaylistID(url);
+        String playlistID = HTMLParser.getQueryParameter(url, "list");
 
         if (playlistID == null) {
             throw new IllegalArgumentException("URL \"" + url + "\" is an invalid youtube playlist url!");

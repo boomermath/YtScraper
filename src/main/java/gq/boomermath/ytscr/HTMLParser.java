@@ -5,12 +5,15 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
 class HTMLParser {
+    private static final String API_URL = "https://www.youtube.com/youtubei/v1/browse?key=";
     private static final String DEFAULT_PREFIX = "var ytInitialData =";
     private static final String PLAYER_PREFIX = "var ytInitialPlayerResponse =";
 
@@ -22,6 +25,7 @@ class HTMLParser {
                 String data = node.data().trim();
 
                 if (data.startsWith(DEFAULT_PREFIX)) {
+                    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(data.split(DEFAULT_PREFIX)[1]), null);
                     return new JSONObject(data.split(DEFAULT_PREFIX)[1]);
                 }
             }
@@ -54,35 +58,36 @@ class HTMLParser {
         }
     }
 
-    private static String getQueryParameter(String input, String queryParam) throws MalformedURLException {
-        URL url = new URL(input);
-
-        if (!url.getHost().equals("youtube.com") && !url.getHost().equals("www.youtube.com")) throw new MalformedURLException("Input is not a valid youtube url!");
-
-        String[] queryString = url.getQuery().split("&");
-        HashMap<String, String> queryParams = new HashMap<>();
-
-        for (String param : queryString) {
-            String[] string = param.split("=");
-            queryParams.put(string[0], string[1]);
-        }
-
-        return queryParams.get(queryParam);
-    }
-
-    protected static String getVideoID(String url)  {
+    /*
+    protected static void parseContinuation(String token) {
         try {
-            return getQueryParameter(url, "v");
-        } catch (MalformedURLException e) {
-            return null;
+            Document document = Jsoup.connect(API_URL + "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8").data("continuation", token).post();
+            System.out.println(document);
+        } catch (IOException io) {
+            System.out.println(io);
         }
     }
+    */
+     
 
-    protected static String getPlaylistID(String url)  {
+    protected static String getQueryParameter(String input, String queryParam) {
         try {
-            return getQueryParameter(url, "list");
+            URL url = new URL(input);
+
+            if (!url.getHost().equals("youtube.com") && !url.getHost().equals("www.youtube.com"))
+                throw new IllegalArgumentException("Input is not a valid youtube url!");
+
+            String[] queryString = url.getQuery().split("&");
+            HashMap<String, String> queryParams = new HashMap<>();
+
+            for (String param : queryString) {
+                String[] string = param.split("=");
+                queryParams.put(string[0], string[1]);
+            }
+
+            return queryParams.get(queryParam);
         } catch (MalformedURLException e) {
-            return null;
+            return input;
         }
     }
 }

@@ -1,11 +1,14 @@
 package gq.boomermath.ytscr;
 
+import gq.boomermath.ytscr.serializable.Playlist;
 import gq.boomermath.ytscr.serializable.Video;
+
+import java.net.URL;
 
 public class Main {
     public static void main(String[] args) {
-        Video video = Youtube.searchOne("ayase self cover ghost city tokyo");
-        log(video);
+        Playlist v = Youtube.getPlaylist("PLOHoVaTp8R7dfrJW5pumS0iD_dhlXKv17");
+        log(v.videos()[0]);
     }
 
     public static void log(Video v) {
