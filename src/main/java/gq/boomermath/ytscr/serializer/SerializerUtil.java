@@ -49,6 +49,29 @@ public class SerializerUtil {
         return desc.toString();
     }
 
+    protected static Video[] getPlaylistVideos(JSONArray videoArr) {
+         Video[] videos = new Video[videoArr.length()];
+
+        for (int i = 0; i < videos.length; i++) {
+            JSONObject videoJSON = ((JSONObject) videoArr.get(i)).getJSONObject("playlistVideoRenderer");
+
+            Video video = new Video(
+                    videoJSON.getString("videoId"),
+                    SerializerUtil.parseAuthorJSON(videoJSON).getString("text"),
+                    videoJSON.optJSONArray("detailedMetadataSnippets") != null ? SerializerUtil.getDescription(videoJSON.getJSONArray("detailedMetadataSnippets")) : null,
+                    videoJSON.getJSONObject("lengthText").getString("simpleText"),
+                    videoJSON.optJSONObject("publishedTimeText") != null ? videoJSON.getJSONObject("publishedTimeText").getString("simpleText") : null,
+                    SerializerUtil.parseThumbnails(videoJSON.getJSONObject("thumbnail")),
+                    SerializerUtil.getChannel(videoJSON.getJSONObject("shortBylineText"), null),
+                    0
+            );
+
+            videos[i] = video;
+        }
+
+        return videos;
+    }
+
     protected static Channel getChannel(JSONObject json, Thumbnail icon) {
         JSONObject channelJSON = (JSONObject) json.getJSONArray("runs").get(0);
         JSONObject navMeta = channelJSON.getJSONObject("navigationEndpoint");

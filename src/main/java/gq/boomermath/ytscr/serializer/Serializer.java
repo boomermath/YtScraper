@@ -46,30 +46,11 @@ public class Serializer {
 
     public static Playlist processPlaylist(JSONObject initialData) {
         JSONObject content = (JSONObject) SerializerUtil.parseJSONObject(initialData, "contents.twoColumnBrowseResultsRenderer").getJSONArray("tabs").get(0);
-        JSONObject c = (JSONObject) SerializerUtil.parseJSONObject(content, "tabRenderer.content.sectionListRenderer").getJSONArray("contents").get(0);
-        JSONObject d = (JSONObject) c.getJSONObject("itemSectionRenderer").getJSONArray("contents").get(0);
-        JSONArray videoArr =  d.getJSONObject("playlistVideoListRenderer").getJSONArray("contents");
+        JSONObject tabRenderer = (JSONObject) SerializerUtil.parseJSONObject(content, "tabRenderer.content.sectionListRenderer").getJSONArray("contents").get(0);
+        JSONObject videoContents = (JSONObject) tabRenderer.getJSONObject("itemSectionRenderer").getJSONArray("contents").get(0);
+        JSONArray videoArr =  videoContents.getJSONObject("playlistVideoListRenderer").getJSONArray("contents");
 
-        Video[] videos = new Video[videoArr.length()];
-
-        for (int i = 0; i < videos.length; i++) {
-            JSONObject videoJSON = ((JSONObject) videoArr.get(i)).optJSONObject("playlistVideoRenderer");
-
-            if (videoJSON == null) continue;
-
-            Video video = new Video(
-                    videoJSON.getString("videoId"),
-                    SerializerUtil.parseAuthorJSON(videoJSON).getString("text"),
-                    videoJSON.optJSONArray("detailedMetadataSnippets") != null ? SerializerUtil.getDescription(videoJSON.getJSONArray("detailedMetadataSnippets")) : null,
-                    videoJSON.getJSONObject("lengthText").getString("simpleText"),
-                    videoJSON.optJSONObject("publishedTimeText") != null ? videoJSON.getJSONObject("publishedTimeText").getString("simpleText") : null,
-                    SerializerUtil.parseThumbnails(videoJSON.getJSONObject("thumbnail")),
-                    SerializerUtil.getChannel(videoJSON.getJSONObject("shortBylineText"), new Thumbnail(null, 0, 0)),
-                    0
-            );
-
-            videos[i] = video;
-        }
+        Video[] videos = SerializerUtil.getPlaylistVideos(videoArr.length())
 
         JSONArray playlistItems = initialData.getJSONObject("sidebar").getJSONObject("playlistSidebarRenderer").getJSONArray("items");
 
