@@ -1,5 +1,6 @@
 package gq.boomermath.ytscr.serializer;
 
+import gq.boomermath.ytscr.serializable.Video;
 import gq.boomermath.ytscr.serializable.Channel;
 import gq.boomermath.ytscr.serializable.Thumbnail;
 import org.json.JSONArray;

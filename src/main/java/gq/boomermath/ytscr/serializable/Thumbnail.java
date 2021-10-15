@@ -1,7 +1,5 @@
 package gq.boomermath.ytscr.serializable;
 
-import java.util.Objects;
-
 public final class Thumbnail {
     private final String url;
     private final int width;

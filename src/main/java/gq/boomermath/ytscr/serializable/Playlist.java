@@ -1,7 +1,5 @@
 package gq.boomermath.ytscr.serializable;
 
-import java.util.Objects;
-
 public final class Playlist {
     private final String id;
     private final String title;

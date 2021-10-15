@@ -50,7 +50,7 @@ public class Serializer {
         JSONObject videoContents = (JSONObject) tabRenderer.getJSONObject("itemSectionRenderer").getJSONArray("contents").get(0);
         JSONArray videoArr =  videoContents.getJSONObject("playlistVideoListRenderer").getJSONArray("contents");
 
-        Video[] videos = SerializerUtil.getPlaylistVideos(videoArr.length())
+        Video[] videos = SerializerUtil.getPlaylistVideos(videoArr);
 
         JSONArray playlistItems = initialData.getJSONObject("sidebar").getJSONObject("playlistSidebarRenderer").getJSONArray("items");
 
@@ -90,11 +90,11 @@ public class Serializer {
                 new Channel(
                         videoDetails.getString("author"),
                         videoDetails.getString("channelId"),
-                        "https://youtube.com" + SerializerUtil.parseJSONObject(SerializerUtil.parseAuthorJSON(owner), "navigationEndpoint.commandMetadata.webCommandMetadata").getString("url"),
+                        "https://www.youtube.com" + SerializerUtil.parseJSONObject(SerializerUtil.parseAuthorJSON(owner), "navigationEndpoint.commandMetadata.webCommandMetadata").getString("url"),
                         owner.getJSONObject("subscriberCountText").getString("simpleText").replaceFirst(" subscribers", ""),
                         SerializerUtil.parseThumbnails(owner.getJSONObject("thumbnail"))[0]
                 ),
-                videoDetails.getInt("viewCount")
+                videoDetails.getLong("viewCount")
         );
     }
 }

@@ -2,7 +2,6 @@ package gq.boomermath.ytscr.serializable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Objects;
 import java.util.TimeZone;
 
 public final class Video {
