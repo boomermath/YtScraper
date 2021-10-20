@@ -20,7 +20,7 @@ public final class Channel {
     }
 
     public String iconURL(int size) {
-        if (icon.url() == null) return null;
+        if (icon == null || icon.url() == null) return null;
         if (size < 0) throw new IllegalArgumentException("Size cannot be less than 0!");
         String num = icon.url().split("=s")[1].split("-c")[0];
         return icon.url().replaceFirst("=s" + num + "-c", "=s" + size + "-c");

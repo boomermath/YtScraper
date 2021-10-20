@@ -34,14 +34,21 @@ public class Youtube {
             throw new IllegalArgumentException("URL \"" + url + "\" is an invalid youtube url!");
         }
 
-        JSONObject[] inputData = HTMLParser.parse("https://www.youtube.com/watch?v=" + urlID, true);
+        JSONObject[] inputData = HTMLParser.parseVideoPlayerInfo("https://www.youtube.com/watch?v=" + urlID);
         return Serializer.processVideo(inputData[0], inputData[1]);
     }
 
     public static Playlist getPlaylist(String url) {
         String playlistID = HTMLParser.getQueryParameter(url, "list");
 
-        if (playlistID == null) {
+        if (playlistID == null ||
+                !playlistID.startsWith("PL") &&
+                        !playlistID.startsWith("FL") &&
+                        !playlistID.startsWith("LL") &&
+                        !playlistID.startsWith("UU") &&
+                        !playlistID.startsWith("RDC") &&
+                        !playlistID.startsWith("O")
+        ) {
             throw new IllegalArgumentException("URL \"" + url + "\" is an invalid youtube playlist url!");
         }
 

@@ -6,7 +6,7 @@ import java.util.TimeZone;
 
 public final class Video {
     private final String id;
-    private final String name;
+    private final String title;
     private final String description;
     private final String duration;
     private final String uploaded;
@@ -14,12 +14,12 @@ public final class Video {
     private final Channel author;
     private final long views;
 
-    public Video(String id, String name, String description,
+    public Video(String id, String title, String description,
                  String duration, String uploaded,
                  Thumbnail[] thumbnails,
                  Channel author, long views) {
         this.id = id;
-        this.name = name;
+        this.title = title;
         this.description = description;
         this.duration = duration;
         this.uploaded = uploaded;
@@ -49,15 +49,15 @@ public final class Video {
     }
 
     public String toString() {
-        return name;
+        return title;
     }
 
     public String id() {
         return id;
     }
 
-    public String name() {
-        return name;
+    public String title() {
+        return title;
     }
 
     public String description() {

@@ -1,8 +1,8 @@
 package gq.boomermath.ytscr.serializer;
 
-import gq.boomermath.ytscr.serializable.Video;
 import gq.boomermath.ytscr.serializable.Channel;
 import gq.boomermath.ytscr.serializable.Thumbnail;
+import gq.boomermath.ytscr.serializable.Video;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -15,7 +15,7 @@ public class SerializerUtil {
             try {
                 object = object.getJSONObject(key);
             } catch (Exception e) {
-               e.printStackTrace();
+                e.printStackTrace();
             }
         }
 
@@ -38,6 +38,7 @@ public class SerializerUtil {
     protected static JSONObject parseAuthorJSON(JSONObject json) {
         return (JSONObject) json.getJSONObject("title").getJSONArray("runs").get(0);
     }
+
     protected static String getDescription(JSONArray descArr) {
         JSONObject json = ((JSONObject) descArr.get(0)).getJSONObject("snippetText");
         StringBuilder desc = new StringBuilder();
@@ -50,11 +51,12 @@ public class SerializerUtil {
         return desc.toString();
     }
 
-    protected static Video[] getPlaylistVideos(JSONArray videoArr) {
-         Video[] videos = new Video[videoArr.length()];
+    protected static Video[] getPlaylistVideos(JSONArray videoArr, boolean hasContinuation) {
+        int iterations = hasContinuation ? videoArr.length() - 1 : videoArr.length();
+        Video[] videos = new Video[iterations];
 
-        for (int i = 0; i < videos.length; i++) {
-            JSONObject videoJSON = ((JSONObject) videoArr.get(i)).getJSONObject("playlistVideoRenderer");
+        for (int i = 0; i < iterations; i++) {
+            JSONObject videoJSON = ((JSONObject) videoArr.get(i)).optJSONObject("playlistVideoRenderer");
 
             Video video = new Video(
                     videoJSON.getString("videoId"),
@@ -63,7 +65,7 @@ public class SerializerUtil {
                     videoJSON.getJSONObject("lengthText").getString("simpleText"),
                     videoJSON.optJSONObject("publishedTimeText") != null ? videoJSON.getJSONObject("publishedTimeText").getString("simpleText") : null,
                     SerializerUtil.parseThumbnails(videoJSON.getJSONObject("thumbnail")),
-                    SerializerUtil.getChannel(videoJSON.getJSONObject("shortBylineText"), null),
+                    SerializerUtil.getQueryChannel(videoJSON.getJSONObject("shortBylineText"), null),
                     0
             );
 
@@ -73,7 +75,7 @@ public class SerializerUtil {
         return videos;
     }
 
-    protected static Channel getChannel(JSONObject json, Thumbnail icon) {
+    protected static Channel getQueryChannel(JSONObject json, Thumbnail icon) {
         JSONObject channelJSON = (JSONObject) json.getJSONArray("runs").get(0);
         JSONObject navMeta = channelJSON.getJSONObject("navigationEndpoint");
 
@@ -83,6 +85,24 @@ public class SerializerUtil {
                 "https://youtube.com" + SerializerUtil.parseJSONObject(navMeta, "commandMetadata.webCommandMetadata").getString("url"),
                 null,
                 icon
+        );
+    }
+
+    protected static Channel getPlaylistChannel(JSONObject secondaryRendererRaw) {
+        if (secondaryRendererRaw == null) return null;
+
+        JSONObject secondaryRenderer = secondaryRendererRaw.getJSONObject("playlistSidebarSecondaryInfoRenderer");
+
+        JSONObject videoOwnerRenderer = SerializerUtil.parseJSONObject(secondaryRenderer, "videoOwner.videoOwnerRenderer");
+        JSONObject author = SerializerUtil.parseAuthorJSON(videoOwnerRenderer);
+        String metaURL = SerializerUtil.parseJSONObject(author, "navigationEndpoint.commandMetadata.webCommandMetadata").getString("url");
+        String finalAuthorURL = metaURL != null ? metaURL : author.getJSONObject("browseEndpoint").getString("canonicalBaseUrl");
+
+        return new Channel(
+                author.getString("text"),
+                finalAuthorURL.split("/")[1], "https://www.youtube.com" + finalAuthorURL,
+                null,
+                SerializerUtil.parseThumbnails(videoOwnerRenderer.getJSONObject("thumbnail"))[0]
         );
     }
 

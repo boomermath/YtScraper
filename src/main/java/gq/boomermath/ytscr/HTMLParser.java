@@ -30,14 +30,12 @@ class HTMLParser {
                 }
             }
         } catch (IOException e) {
-            return null;
+            e.printStackTrace();
         }
         return null;
     }
 
-    protected static JSONObject[] parse(String url, boolean video) {
-        if (!video) return null;
-
+    protected static JSONObject[] parseVideoPlayerInfo(String url) {
         try {
             Document document = Jsoup.connect(url).get();
 
@@ -54,28 +52,40 @@ class HTMLParser {
 
             return jsonArgs;
         } catch (IOException e) {
-            return null;
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    protected static void parseContinuation(String token) {
+        String clientContext = "{\"client\":{\"utcOffsetMinutes\":0,\"gl\":\"US\",\"hl\":\"en\",\"clientName\":\"WEB\",\"clientVersion\":\"2.20211014.05.00\"},\"user\":{},\"request\":{}}";
+        HashMap<String, String> data = new HashMap<>();
+
+        data.put("continuation", token);
+        data.put("context", clientContext);
+
+        try {
+            Document document = Jsoup.connect(API_URL + "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8")
+                    .header("Content-Type", "application/json")
+                    .header("Accept", "application/json")
+                    .data(data)
+                    .post();
+            System.out.println(document);
+        } catch (IOException io) {
+
+           io.printStackTrace();
         }
     }
 
-    /*
-    protected static void parseContinuation(String token) {
-        try {
-            Document document = Jsoup.connect(API_URL + "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8").data("continuation", token).post();
-            System.out.println(document);
-        } catch (IOException io) {
-            System.out.println(io);
-        }
-    }
-    */
-     
 
     protected static String getQueryParameter(String input, String queryParam) {
         try {
             URL url = new URL(input);
 
-            if (!url.getHost().equals("youtube.com") && !url.getHost().equals("www.youtube.com"))
+            if (!url.getHost().equals("youtube.com") && !url.getHost().equals("www.youtube.com")) {
                 throw new IllegalArgumentException("Input is not a valid youtube url!");
+            }
 
             String[] queryString = url.getQuery().split("&");
             HashMap<String, String> queryParams = new HashMap<>();
