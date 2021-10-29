@@ -6,7 +6,7 @@ import gq.boomermath.ytscr.entities.YoutubeVideo;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class SerializerUtil {
+class SerializerUtil {
     protected static JSONObject parseJSONObject(JSONObject obj, String path) {
         String[] keys = path.split("\\.");
         JSONObject object = obj;
