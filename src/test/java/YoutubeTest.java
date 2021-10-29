@@ -1,15 +1,15 @@
 import gq.boomermath.ytscr.Youtube;
-import gq.boomermath.ytscr.serializable.Video;
+import gq.boomermath.ytscr.entities.YoutubeVideo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class YoutubeTest {
     @Test
     public void testSearch() {
-        Video[] videos = Youtube.search("Undertale - Megalovania", 10);
+        YoutubeVideo[] videos = Youtube.search("Undertale - Megalovania", 10);
         Assertions.assertEquals(10, videos.length);
 
-        Video megalovaniaVideo = videos[0];
+        YoutubeVideo megalovaniaVideo = videos[0];
 
         Assertions.assertEquals("Undertale - Megalovania", megalovaniaVideo.title());
         Assertions.assertEquals("wDgQdr8ZkTw", megalovaniaVideo.id());

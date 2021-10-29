@@ -1,13 +1,13 @@
-package gq.boomermath.ytscr.serializable;
+package gq.boomermath.ytscr.entities;
 
 public final class YoutubePlaylist {
     private final String id;
     private final String title;
-    private final Thumbnail[] thumbnails;
-    private final Channel author;
-    private final Video[] videos;
+    private final YoutubeThumbnail[] thumbnails;
+    private final YoutubeChannel author;
+    private final YoutubeVideo[] videos;
 
-    public YoutubePlaylist(String id, String title, Thumbnail[] thumbnails, Channel author, Video[] videos) {
+    public YoutubePlaylist(String id, String title, YoutubeThumbnail[] thumbnails, YoutubeChannel author, YoutubeVideo[] videos) {
         this.id = id;
         this.title = title;
         this.thumbnails = thumbnails;
@@ -31,15 +31,15 @@ public final class YoutubePlaylist {
         return title;
     }
 
-    public Thumbnail[] thumbnails() {
+    public YoutubeThumbnail[] thumbnails() {
         return thumbnails;
     }
 
-    public Channel author() {
+    public YoutubeChannel author() {
         return author;
     }
 
-    public Video[] videos() {
+    public YoutubeVideo[] videos() {
         return videos;
     }
 }

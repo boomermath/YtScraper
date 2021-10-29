@@ -1,4 +1,4 @@
-package gq.boomermath.ytscr.serializable;
+package gq.boomermath.ytscr.entities;
 
 public final class YoutubeThumbnail {
     private final String url;

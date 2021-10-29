@@ -1,4 +1,4 @@
-package gq.boomermath.ytscr.serializable;
+package gq.boomermath.ytscr.entities;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,14 +10,13 @@ public final class YoutubeVideo {
     private final String description;
     private final String duration;
     private final String uploaded;
-    private final Thumbnail[] thumbnails;
-    private final Channel author;
+    private final YoutubeThumbnail[] thumbnails;
+    private final YoutubeChannel author;
     private final long views;
 
     public YoutubeVideo(String id, String title, String description,
-                 String duration, String uploaded,
-                 Thumbnail[] thumbnails,
-                 Channel author, long views) {
+                        String duration, String uploaded,
+                        YoutubeThumbnail[] thumbnails, YoutubeChannel author, long views) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -72,11 +71,11 @@ public final class YoutubeVideo {
         return uploaded;
     }
 
-    public Thumbnail[] thumbnails() {
+    public YoutubeThumbnail[] thumbnails() {
         return thumbnails;
     }
 
-    public Channel author() {
+    public YoutubeChannel author() {
         return author;
     }
 

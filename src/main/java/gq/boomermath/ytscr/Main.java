@@ -1,10 +1,10 @@
 package gq.boomermath.ytscr;
 
-import gq.boomermath.ytscr.serializable.Playlist;
+import gq.boomermath.ytscr.entities.YoutubePlaylist;
 
 public class Main {
     public static void main(String[] args) {
-        Playlist playlist = Youtube.getPlaylist("https://www.youtube.com/playlist?list=RDCLAK5uy_k27uu-EtQ_b5U2r26DNDZOmNqGdccUIGQ");
+        YoutubePlaylist playlist = Youtube.getPlaylist("https://www.youtube.com/playlist?list=PLAuXvMFaTiZxNllvtCAObLD2tq31W0tgk");
 
         System.out.println(playlist.videos()[0].title());
     }

@@ -1,8 +1,8 @@
-package gq.boomermath.ytscr.serializer;
+package gq.boomermath.ytscr.internal;
 
-import gq.boomermath.ytscr.serializable.Channel;
-import gq.boomermath.ytscr.serializable.Thumbnail;
-import gq.boomermath.ytscr.serializable.Video;
+import gq.boomermath.ytscr.entities.YoutubeChannel;
+import gq.boomermath.ytscr.entities.YoutubeThumbnail;
+import gq.boomermath.ytscr.entities.YoutubeVideo;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -22,13 +22,13 @@ public class SerializerUtil {
         return object;
     }
 
-    protected static Thumbnail[] parseThumbnails(JSONObject json) {
+    protected static YoutubeThumbnail[] parseThumbnails(JSONObject json) {
         JSONArray thumbnailsJSON = json.getJSONArray("thumbnails");
-        Thumbnail[] thumbnailArr = new Thumbnail[thumbnailsJSON.length()];
+        YoutubeThumbnail[] thumbnailArr = new YoutubeThumbnail[thumbnailsJSON.length()];
 
         for (int i = 0; i < thumbnailsJSON.length(); i++) {
             JSONObject thumbnailJSON = (JSONObject) thumbnailsJSON.get(i);
-            Thumbnail thumbnail = new Thumbnail(thumbnailJSON.getString("url"), thumbnailJSON.getInt("width"), thumbnailJSON.getInt("height"));
+            YoutubeThumbnail thumbnail = new YoutubeThumbnail(thumbnailJSON.getString("url"), thumbnailJSON.getInt("width"), thumbnailJSON.getInt("height"));
             thumbnailArr[i] = thumbnail;
         }
 
@@ -51,14 +51,14 @@ public class SerializerUtil {
         return desc.toString();
     }
 
-    protected static Video[] getPlaylistVideos(JSONArray videoArr, boolean hasContinuation) {
+    protected static YoutubeVideo[] getPlaylistVideos(JSONArray videoArr, boolean hasContinuation) {
         int iterations = hasContinuation ? videoArr.length() - 1 : videoArr.length();
-        Video[] videos = new Video[iterations];
+        YoutubeVideo[] videos = new YoutubeVideo[iterations];
 
         for (int i = 0; i < iterations; i++) {
             JSONObject videoJSON = ((JSONObject) videoArr.get(i)).optJSONObject("playlistVideoRenderer");
 
-            Video video = new Video(
+            YoutubeVideo video = new YoutubeVideo(
                     videoJSON.getString("videoId"),
                     SerializerUtil.parseAuthorJSON(videoJSON).getString("text"),
                     videoJSON.has("detailedMetadataSnippets") ? SerializerUtil.getDescription(videoJSON.getJSONArray("detailedMetadataSnippets")) : null,
@@ -75,11 +75,11 @@ public class SerializerUtil {
         return videos;
     }
 
-    protected static Channel getQueryChannel(JSONObject json, Thumbnail icon) {
+    protected static YoutubeChannel getQueryChannel(JSONObject json, YoutubeThumbnail icon) {
         JSONObject channelJSON = (JSONObject) json.getJSONArray("runs").get(0);
         JSONObject navMeta = channelJSON.getJSONObject("navigationEndpoint");
 
-        return new Channel(
+        return new YoutubeChannel(
                 channelJSON.getString("text"),
                 navMeta.getJSONObject("browseEndpoint").getString("browseId"),
                 "https://youtube.com" + SerializerUtil.parseJSONObject(navMeta, "commandMetadata.webCommandMetadata").getString("url"),
@@ -88,7 +88,7 @@ public class SerializerUtil {
         );
     }
 
-    protected static Channel getPlaylistChannel(JSONObject secondaryRendererRaw) {
+    protected static YoutubeChannel getPlaylistChannel(JSONObject secondaryRendererRaw) {
         if (secondaryRendererRaw == null) return null;
 
         JSONObject secondaryRenderer = secondaryRendererRaw.getJSONObject("playlistSidebarSecondaryInfoRenderer");
@@ -98,7 +98,7 @@ public class SerializerUtil {
         String metaURL = SerializerUtil.parseJSONObject(author, "navigationEndpoint.commandMetadata.webCommandMetadata").getString("url");
         String finalAuthorURL = metaURL != null ? metaURL : author.getJSONObject("browseEndpoint").getString("canonicalBaseUrl");
 
-        return new Channel(
+        return new YoutubeChannel(
                 author.getString("text"),
                 finalAuthorURL.split("/")[1], "https://www.youtube.com" + finalAuthorURL,
                 null,

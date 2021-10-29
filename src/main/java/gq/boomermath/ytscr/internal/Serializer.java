@@ -1,8 +1,8 @@
-package gq.boomermath.ytscr.serializer;
+package gq.boomermath.ytscr.internal;
 
-import gq.boomermath.ytscr.serializable.Channel;
-import gq.boomermath.ytscr.serializable.Playlist;
-import gq.boomermath.ytscr.serializable.Video;
+import gq.boomermath.ytscr.entities.YoutubeChannel;
+import gq.boomermath.ytscr.entities.YoutubePlaylist;
+import gq.boomermath.ytscr.entities.YoutubeVideo;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -10,12 +10,12 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Serializer {
-    public static Video[] processQuery(JSONObject initialData, int limit) {
+    public static YoutubeVideo[] processQuery(JSONObject initialData, int limit) {
         JSONObject content = SerializerUtil.parseJSONObject(initialData, "contents.twoColumnSearchResultsRenderer.primaryContents.sectionListRenderer").getJSONArray("contents").getJSONObject(0);
         JSONArray videoArr = content.getJSONObject("itemSectionRenderer").getJSONArray("contents");
 
         int lim = limit == 0 || limit > videoArr.length() ? videoArr.length() : limit;
-        ArrayList<Video> videos = new ArrayList<>();
+        ArrayList<YoutubeVideo> videos = new ArrayList<>();
 
         for (int i = 0; i < lim; i++) {
             JSONObject videoJSON = videoArr.getJSONObject(i).optJSONObject("videoRenderer");
@@ -25,7 +25,7 @@ public class Serializer {
             JSONObject titleJSON = SerializerUtil.parseAuthorJSON(videoJSON);
             String videoTitle = titleJSON.getString("text");
 
-            Video video = new Video(
+            YoutubeVideo video = new YoutubeVideo(
                     videoJSON.getString("videoId"),
                     videoTitle,
                     videoJSON.has("detailedMetadataSnippets") ? SerializerUtil.getDescription(videoJSON.getJSONArray("detailedMetadataSnippets")) : null,
@@ -39,10 +39,10 @@ public class Serializer {
             videos.add(video);
         }
 
-        return videos.toArray(Video[]::new);
+        return videos.toArray(YoutubeVideo[]::new);
     }
 
-    public static Playlist processPlaylist(JSONObject initialData) {
+    public static YoutubePlaylist processPlaylist(JSONObject initialData) {
         JSONObject content = SerializerUtil.parseJSONObject(initialData, "contents.twoColumnBrowseResultsRenderer").getJSONArray("tabs").getJSONObject(0);
         JSONObject tabRenderer = SerializerUtil.parseJSONObject(content, "tabRenderer.content.sectionListRenderer").getJSONArray("contents").getJSONObject(0);
         JSONObject videoContents = tabRenderer.getJSONObject("itemSectionRenderer").getJSONArray("contents").getJSONObject(0);
@@ -50,7 +50,7 @@ public class Serializer {
 
         boolean hasContinuation = videoArr.getJSONObject(videoArr.length() - 1).optJSONObject("continuationItemRenderer") != null;
 
-        Video[] videos = SerializerUtil.getPlaylistVideos(videoArr, hasContinuation);
+        YoutubeVideo[] videos = SerializerUtil.getPlaylistVideos(videoArr, hasContinuation);
 
         JSONArray playlistItems = initialData.getJSONObject("sidebar").getJSONObject("playlistSidebarRenderer").getJSONArray("items");
 
@@ -59,7 +59,7 @@ public class Serializer {
 
         JSONObject title = primaryRenderer.getJSONObject("title").getJSONArray("runs").getJSONObject(0);
 
-        return new Playlist(
+        return new YoutubePlaylist(
                 SerializerUtil.parseJSONObject(title, "navigationEndpoint.watchEndpoint").getString("playlistId"),
                 SerializerUtil.parseAuthorJSON(primaryRenderer).getString("text"),
                 SerializerUtil.parseThumbnails(SerializerUtil.parseJSONObject(primaryRenderer, "thumbnailRenderer.playlistVideoThumbnailRenderer.thumbnail")),
@@ -68,20 +68,20 @@ public class Serializer {
         );
     }
 
-    public static Video processVideo(JSONObject playerData, JSONObject initialData) {
+    public static YoutubeVideo processVideo(JSONObject playerData, JSONObject initialData) {
         JSONObject videoDetails = initialData.getJSONObject("videoDetails");
 
         JSONObject contents = SerializerUtil.parseJSONObject(playerData, "contents.twoColumnWatchNextResults.results.results").getJSONArray("contents").getJSONObject(1);
         JSONObject owner = SerializerUtil.parseJSONObject(contents, "videoSecondaryInfoRenderer.owner.videoOwnerRenderer");
 
-        return new Video(
+        return new YoutubeVideo(
                 videoDetails.getString("videoId"),
                 videoDetails.getString("title"),
                 videoDetails.getString("shortDescription"),
                 SerializerUtil.getDurationFromSeconds(videoDetails.getInt("lengthSeconds")),
                 initialData.getJSONObject("microformat").getJSONObject("playerMicroformatRenderer").getString("publishDate"),
                 SerializerUtil.parseThumbnails(videoDetails.getJSONObject("thumbnail")),
-                new Channel(
+                new YoutubeChannel(
                         videoDetails.getString("author"),
                         videoDetails.getString("channelId"),
                         "https://www.youtube.com" + SerializerUtil.parseJSONObject(SerializerUtil.parseAuthorJSON(owner), "navigationEndpoint.commandMetadata.webCommandMetadata").getString("url"),
