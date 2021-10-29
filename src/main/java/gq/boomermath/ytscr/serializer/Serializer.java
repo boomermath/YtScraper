@@ -28,9 +28,9 @@ public class Serializer {
             Video video = new Video(
                     videoJSON.getString("videoId"),
                     videoTitle,
-                    videoJSON.optJSONArray("detailedMetadataSnippets") != null ? SerializerUtil.getDescription(videoJSON.getJSONArray("detailedMetadataSnippets")) : null,
+                    videoJSON.has("detailedMetadataSnippets") ? SerializerUtil.getDescription(videoJSON.getJSONArray("detailedMetadataSnippets")) : null,
                     videoJSON.getJSONObject("lengthText").getString("simpleText"),
-                    videoJSON.optJSONObject("publishedTimeText") != null ? videoJSON.getJSONObject("publishedTimeText").getString("simpleText") : null,
+                    videoJSON.has("publishedTimeText") ? videoJSON.getJSONObject("publishedTimeText").getString("simpleText") : null,
                     SerializerUtil.parseThumbnails(videoJSON.getJSONObject("thumbnail")),
                     SerializerUtil.getQueryChannel(videoJSON.getJSONObject("ownerText"), SerializerUtil.parseThumbnails(Objects.requireNonNull(SerializerUtil.parseJSONObject(videoJSON, "channelThumbnailSupportedRenderers.channelThumbnailWithLinkRenderer.thumbnail")))[0]),
                     Long.parseLong(videoJSON.getJSONObject("viewCountText").getString("simpleText").replaceAll(" views", "").replaceAll(",", ""))
@@ -40,7 +40,6 @@ public class Serializer {
         }
 
         return videos.toArray(Video[]::new);
-
     }
 
     public static Playlist processPlaylist(JSONObject initialData) {

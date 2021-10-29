@@ -61,9 +61,9 @@ public class SerializerUtil {
             Video video = new Video(
                     videoJSON.getString("videoId"),
                     SerializerUtil.parseAuthorJSON(videoJSON).getString("text"),
-                    videoJSON.optJSONArray("detailedMetadataSnippets") != null ? SerializerUtil.getDescription(videoJSON.getJSONArray("detailedMetadataSnippets")) : null,
+                    videoJSON.has("detailedMetadataSnippets") ? SerializerUtil.getDescription(videoJSON.getJSONArray("detailedMetadataSnippets")) : null,
                     videoJSON.getJSONObject("lengthText").getString("simpleText"),
-                    videoJSON.optJSONObject("publishedTimeText") != null ? videoJSON.getJSONObject("publishedTimeText").getString("simpleText") : null,
+                    videoJSON.has("publishedTimeText") ? videoJSON.getJSONObject("publishedTimeText").getString("simpleText") : null,
                     SerializerUtil.parseThumbnails(videoJSON.getJSONObject("thumbnail")),
                     SerializerUtil.getQueryChannel(videoJSON.getJSONObject("shortBylineText"), null),
                     0
