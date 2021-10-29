@@ -1,11 +1,11 @@
 package gq.boomermath.ytscr.serializable;
 
-public final class Thumbnail {
+public final class YoutubeThumbnail {
     private final String url;
     private final int width;
     private final int height;
 
-    public Thumbnail(String url, int width, int height) {
+    public YoutubeThumbnail(String url, int width, int height) {
         this.url = url;
         this.width = width;
         this.height = height;
