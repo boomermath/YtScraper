@@ -1,13 +1,13 @@
 package gq.boomermath.ytscr.serializable;
 
-public final class Channel {
+public final class YoutubeChannel {
     private final String title;
     private final String id;
     private final String url;
     private final String subscribers;
     private final Thumbnail icon;
 
-    public Channel(String title, String id, String url, String subscribers, Thumbnail icon) {
+    public YoutubeChannel(String title, String id, String url, String subscribers, Thumbnail icon) {
         this.title = title;
         this.id = id;
         this.url = url;

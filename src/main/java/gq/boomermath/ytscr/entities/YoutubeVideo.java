@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
-public final class Video {
+public final class YoutubeVideo {
     private final String id;
     private final String title;
     private final String description;
@@ -14,7 +14,7 @@ public final class Video {
     private final Channel author;
     private final long views;
 
-    public Video(String id, String title, String description,
+    public YoutubeVideo(String id, String title, String description,
                  String duration, String uploaded,
                  Thumbnail[] thumbnails,
                  Channel author, long views) {

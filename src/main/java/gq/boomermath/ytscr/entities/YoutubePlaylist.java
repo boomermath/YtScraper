@@ -1,13 +1,13 @@
 package gq.boomermath.ytscr.serializable;
 
-public final class Playlist {
+public final class YoutubePlaylist {
     private final String id;
     private final String title;
     private final Thumbnail[] thumbnails;
     private final Channel author;
     private final Video[] videos;
 
-    public Playlist(String id, String title, Thumbnail[] thumbnails, Channel author, Video[] videos) {
+    public YoutubePlaylist(String id, String title, Thumbnail[] thumbnails, Channel author, Video[] videos) {
         this.id = id;
         this.title = title;
         this.thumbnails = thumbnails;
