@@ -25,7 +25,6 @@ class HTMLParser {
                 String data = node.data().trim();
 
                 if (data.startsWith(DEFAULT_PREFIX)) {
-                    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(data.split(DEFAULT_PREFIX)[1]), null);
                     return new JSONObject(data.split(DEFAULT_PREFIX)[1]);
                 }
             }
